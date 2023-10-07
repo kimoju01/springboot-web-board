@@ -26,7 +26,7 @@ public class Board extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String writer;
 
-    // 테스트용 change() 메서드
+    // 수정 작업용 change() 메서드
     public void change(String title, String content) {
         this.title = title;
         this.content = content;
