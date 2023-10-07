@@ -49,6 +49,9 @@ dependencies {
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"       // Querydsl 라이브러리
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"  //  Querydsl 관련 코드 생성 기능 제공
 
+    // ModelMapper
+    implementation 'org.modelmapper:modelmapper:3.1.0'
+
 }
 
 tasks.named('test') {
