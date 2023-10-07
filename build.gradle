@@ -1,7 +1,16 @@
+// Querydsl 설정(1)
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.16'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    // Querydsl 설정(2)
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.study'
@@ -35,8 +44,36 @@ dependencies {
 
     // Thymeleaf 레이아웃 설정
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.1.0'
+
+    // Querydsl 설정(3)
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"       // Querydsl 라이브러리
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"  //  Querydsl 관련 코드 생성 기능 제공
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// Querydsl 설정(4) 추가 시작 (위에 plugin 추가 부분과 맞물림)
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+
+// IDE의 소스 폴더에 자동으로 넣어준다.
+sourceSets {
+    main.java.srcDir querydslDir
+}
+
+// 컴파일이 될때 같이 수행
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
+// Q파일을 생성해준다
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
+// Querydsl 설정(4) 추가 끝
