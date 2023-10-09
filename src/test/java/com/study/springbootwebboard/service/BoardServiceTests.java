@@ -1,6 +1,8 @@
 package com.study.springbootwebboard.service;
 
 import com.study.springbootwebboard.dto.BoardDTO;
+import com.study.springbootwebboard.dto.PageRequestDTO;
+import com.study.springbootwebboard.dto.PageResponseDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,21 @@ public class BoardServiceTests {
     public void testRemove() {
         Long bno = 10L;
         boardService.remove(bno);
+    }
+
+    @Test
+    public void testList() {
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
+                .page(1)
+                .size(10)
+                .keyword("1")
+                .type("tcw")
+                .build();
+
+        PageResponseDTO<BoardDTO> responseDTO = boardService.list(pageRequestDTO);
+
+        log.info(responseDTO);
+
     }
 
 }
