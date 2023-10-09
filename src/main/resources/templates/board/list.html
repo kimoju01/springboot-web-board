@@ -90,8 +90,25 @@
             <!-- Card 끝 -->
         </div>
     </div>
+    <!-- 모달 시작 -->
+    <div class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">등록</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>게시물 등록이 완료되었습니다.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 모달 끝 -->
 
-    <h1>Board List</h1>
 
 </div>
 
@@ -127,6 +144,14 @@
         self.location = '/board/list'
 
     }, false)
+
+    // 정상적으로 게시물 등록 처리 되어서 컨트롤러에서 result가 넘어오면 목록 화면으로 이동할 때 모달 창 띄워주기
+    const result = [[${result}]]
+    const modal = new bootstrap.Modal(document.querySelector('.modal'))
+
+    if(result) {
+        modal.show();
+    }
 
 </script>
 
