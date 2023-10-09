@@ -52,6 +52,9 @@ dependencies {
     // ModelMapper
     implementation 'org.modelmapper:modelmapper:3.1.0'
 
+    // @Valid
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {
