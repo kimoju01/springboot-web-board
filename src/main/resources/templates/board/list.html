@@ -8,6 +8,7 @@
         <!-- 검색 관련 form 시작 -->
         <form action="/board/list" method="get">
             <div class="col">
+                <!-- @Builder.Default로 기본 size 값은 10 -->
                 <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
                 <div class="input-group mb-3">
                     <!-- 검색 옵션 시작 -->
@@ -87,17 +88,45 @@
                 </div>
             </div>
             <!-- Card 끝 -->
-
         </div>
-
     </div>
+
     <h1>Board List</h1>
 
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
-
     console.log("script..........")
+
+    // 페이지 번호 클릭 이벤트
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        // <a> 태그가 아니라면 종료
+        if(target.tagName !== 'A') {
+            return
+        }
+
+        const num = target.getAttribute("data-num")
+        const formObj = document.querySelector("form")
+        // innerHTML으로 넣는 이유? page 값이 주어지지 않으면 @Builder.Default로 page 값이 1이 되게 설정했기 때문에
+        // page 값을 hidden으로(클라이언트에게 안 보이게) 주어서 원하는 페이지 응답 받으려고.
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+        formObj.submit();
+
+    }, false)
+
+    // 지우기 버튼 클릭 이벤트
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        self.location = '/board/list'
+
+    }, false)
 
 </script>
 
