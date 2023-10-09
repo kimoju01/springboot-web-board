@@ -33,6 +33,24 @@
                         </tbody>
                     </table>
                     <!-- Board List Table 끝 -->
+                    <!-- 페이지 번호 시작 -->
+                    <div>
+                        <ul class="pagination justify-content-end">
+                            <li class="page-item" th:if="${responseDTO.prev}">
+                                <a class="page-link" th:data-num="${responseDTO.start - 1}">Previous</a>
+                            </li>
+                            <!-- #numbers.sequence()로 연속된 숫자 만들기 -->
+                            <th:block th:each="i:${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                                <li th:class="${responseDTO.page == i} ? 'page-item active' : 'page-item'">
+                                    <a class="page-link" th:data-num="${i}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+                            <li class="page-item" th:if="${responseDTO.next}">
+                                <a class="page-link" th:data-num="${responseDTO.end + 1}">Next</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- 페이지 번호 끝 -->
                 </div>
             </div>
             <!-- Card 끝 -->
