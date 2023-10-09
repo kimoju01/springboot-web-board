@@ -45,6 +45,19 @@
 
 <script layout:fragment="script" th:inline="javascript">
 
+    <!-- 클라이언트 측에서 서버에서 발생한 유효성 검사 오류 확인하고 처리할 수 있다 -->
+    const errors = [[${errors}]]
+    console.log(errors)
+
+    let errorMsg = ''
+
+    if(errors) {
+        for(let i=0; i<errors.length; i++) {
+            <!-- writer는 비어 있을 수 없습니다. 이런 식으로 나온다 -->
+            errorMsg += `${errors[i].field}은(는) ${errors[i].defaultMessage} \n`
+        }
+        alert(errorMsg)
+    }
 </script>
 
 </html>
