@@ -58,6 +58,7 @@ public class BoardController {
         log.info(boardDTO);
 
         Long bno = boardService.register(boardDTO);
+        // 정상적으로 등록 처리가 되면 목록 화면으로 이동했을 때 result라는 이름으로 게시물 번호(bno)를 담은 일회용 데이터가 전송된다.
         redirectAttributes.addFlashAttribute("result", bno);
         return "redirect:/board/list";
 
