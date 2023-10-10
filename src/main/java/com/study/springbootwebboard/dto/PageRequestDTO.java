@@ -53,7 +53,7 @@ public class PageRequestDTO {
             builder.append("&size=" + this.size);
 
             if(type != null && type.length() > 0) {
-                builder.append("&type" + this.type);
+                builder.append("&type=" + type);
             }
 
             if(keyword != null) {
@@ -64,7 +64,7 @@ public class PageRequestDTO {
             }
             // 링크를 모두 생성한 후 link 변수에 생성된 링크 저장
             // 다음 번에 getLink 메서드를 호출할 때는 링크를 다시 생성하지 않고 저장된 링크를 반환
-            link = builder().toString();
+            link = builder.toString();
         }
 
         return link;
