@@ -5,6 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
+// name? Reply 엔티티는 Reply라는 이름의 테이블과 매핑
+// indexes? 엔티티와 관련된 인덱스를 정의. 인덱스 이름 지정, 인덱스를 생성할 column 목록 지정 (쿼리 조건에 자주 사용되는 컬럼)
+// => idx_reply_board_bno 라는 이름의 인덱스가 board_bno 열에 생성 => DB와 엔티티 사이의 매핑 및 성능 최적화
+@Table(name = "Reply", indexes = {
+        @Index(name = "idx_reply_board_bno", columnList = "board_bno") })
 @Getter
 @Builder
 @AllArgsConstructor
