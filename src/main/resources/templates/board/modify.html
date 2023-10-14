@@ -75,16 +75,28 @@
         alert(errorMsg)
     }
 
-    // 수정 버튼 클릭 이벤트
+    // 수정, 삭제 버튼 클릭 이벤트 관련 변수
     const link = [[${pageRequestDTO.getLink()}]]
     const formObj = document.querySelector("#f1")
 
+    // 수정 버튼 클릭 이벤트
     document.querySelector(".modifyBtn").addEventListener("click", function (e) {
         e.preventDefault()
         e.stopPropagation()
 
         // 페이지, 검색 정보도 같이 쿼리 스트링으로 전달
         formObj.action = `/board/modify?${link}`
+        formObj.method = 'post'
+        formObj.submit()
+
+    }, false)
+
+    // 삭제 버튼 클릭 이벤트
+    document.querySelector(".removeBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.action = `/board/remove`
         formObj.method = 'post'
         formObj.submit()
 
