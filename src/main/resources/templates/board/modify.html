@@ -1,0 +1,95 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basic.html}">
+
+<head>
+    <title>Board Modify</title>
+</head>
+
+<div layout:fragment="content">
+    <div class="row mt-3">
+        <div class="col">
+            <!-- Card 시작 -->
+            <div class="card">
+                <div class="card-header">
+                    Board Read
+                </div>
+                <div class="card-body">
+                    <form action="/board/modify" method="post" id="f1">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Bno</span>
+                            <input type="text" class="form-control" th:value="${dto.bno}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Title</span>
+                            <input type="text" class="form-control" name="title" th:value="${dto.title}">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Content</span>
+                            <textarea class="form-control" rows="5" name="content">[[${dto.content}]]</textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Writer</span>
+                            <input type="text" class="form-control" name="writer" th:value="${dto.writer}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">RegDate</span>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.regDate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">ModDate</span>
+                            <input type="text" class="form-control" th:value="${#temporals.format(dto.modDate, 'yyyy-MM-dd HH:mm:ss')}" readonly>
+                        </div>
+                        <div>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end" th:with="link=${pageRequestDTO.getLink()}">
+                                <button type="submit" class="btn btn-primary modifyBtn">Modify</button>
+                                <button type="button" class="btn btn-danger removeBtn">Remove</button>
+                                <button type="button" class="btn btn-secondary">List</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Card 끝 -->
+        </div>
+    </div>
+
+
+</div>
+
+<script layout:fragment="script" th:inline="javascript">
+
+    <!-- 클라이언트 측에서 서버에서 발생한 유효성 검사 오류 확인하고 처리할 수 있다 -->
+    const errors = [[${errors}]]
+    console.log(errors)
+
+    let errorMsg = ''
+    if(errors) {
+        for(let i=0; i<errors.length; i++) {
+            errorMsg += `${errors[i].field}은(는) ${errors[i].defaultMessage} \n`
+        }
+        // history.replacestate(state, title, url)
+        // 현재 페이지 URL을 변경하지 않고(null) 페이지 상태 변경
+        history.replaceState({}, null, null)
+        alert(errorMsg)
+    }
+
+    // 수정 버튼 클릭 이벤트
+    const link = [[${pageRequestDTO.getLink()}]]
+    const formObj = document.querySelector("#f1")
+
+    document.querySelector(".modifyBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        // 페이지, 검색 정보도 같이 쿼리 스트링으로 전달
+        formObj.action = `/board/modify?${link}`
+        formObj.method = 'post'
+        formObj.submit()
+
+    }, false)
+
+</script>
+
+</html>
