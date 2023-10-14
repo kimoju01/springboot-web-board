@@ -104,6 +104,17 @@ public class BoardController {
 
     }
 
+    @PostMapping("/remove")
+    public String remove(Long bno, RedirectAttributes redirectAttributes) {
+        log.info("board POST remove..........");
+
+        boardService.remove(bno);
+        redirectAttributes.addFlashAttribute("result", "removed");
+
+        return "redirect:/board/list";
+
+    }
+
 
 
 }
