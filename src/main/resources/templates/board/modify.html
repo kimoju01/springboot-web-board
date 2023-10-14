@@ -45,7 +45,7 @@
                             <div class="d-grid gap-2 d-md-flex justify-content-md-end" th:with="link=${pageRequestDTO.getLink()}">
                                 <button type="submit" class="btn btn-primary modifyBtn">Modify</button>
                                 <button type="button" class="btn btn-danger removeBtn">Remove</button>
-                                <button type="button" class="btn btn-secondary">List</button>
+                                <button type="button" class="btn btn-secondary listBtn">List</button>
                             </div>
                         </div>
                     </form>
@@ -99,6 +99,16 @@
         formObj.action = `/board/remove`
         formObj.method = 'post'
         formObj.submit()
+
+    }, false)
+
+    // 목록 버튼 클릭 이벤트
+    document.querySelector(".listBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        formObj.reset()
+        self.location = `/board/list?${link}`
 
     }, false)
 
