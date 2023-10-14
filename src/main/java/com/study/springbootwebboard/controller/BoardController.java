@@ -64,15 +64,46 @@ public class BoardController {
 
     }
 
-    @GetMapping("/read")
+    @GetMapping({"/read", "/modify"})
     public void read(Long bno, PageRequestDTO pageRequestDTO, Model model) {
 
-        log.info("board read..........");
+        log.info("board GET read & modify..........");
         BoardDTO boardDTO = boardService.readOne(bno);
         log.info(boardDTO);
 
         model.addAttribute("dto", boardDTO);
 
     }
+
+    @PostMapping("/modify")
+    public String modify(PageRequestDTO pageRequestDTO,
+                       @Valid BoardDTO boardDTO,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes) {
+
+        log.info("board POST modify.........." + boardDTO);
+
+        if(bindingResult.hasErrors()) {
+            log.info("has error..........");
+
+            String link = pageRequestDTO.getLink();
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addAttribute("bno", boardDTO.getBno());
+
+            // 에러가 발생할 시 errors라는 이름으로 다시 조건 그대로 붙여서 /board/modify로 이동
+            return "redirect:/board/modify?" + link;
+        }
+
+        boardService.modify(boardDTO);
+        redirectAttributes.addFlashAttribute("result", "modified");
+        redirectAttributes.addAttribute("bno", boardDTO.getBno());
+
+        // 에러 없이 정상 처리될 경우에는 검색, 페이징 조건 초기화하고 /board/read로 이동.
+        // 왜? 제목, 내용 등이 변경되면 검색 조건에 안 맞을 수도 있으니까
+        return "redirect:/board/read";
+
+    }
+
+
 
 }
