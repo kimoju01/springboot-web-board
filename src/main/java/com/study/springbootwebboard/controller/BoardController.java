@@ -1,6 +1,7 @@
 package com.study.springbootwebboard.controller;
 
 import com.study.springbootwebboard.dto.BoardDTO;
+import com.study.springbootwebboard.dto.BoardListReplyCountDTO;
 import com.study.springbootwebboard.dto.PageRequestDTO;
 import com.study.springbootwebboard.dto.PageResponseDTO;
 import com.study.springbootwebboard.service.BoardService;
@@ -27,7 +28,10 @@ public class BoardController {
     @GetMapping("/list")
     public void list(PageRequestDTO pageRequestDTO, Model model) {
 
-        PageResponseDTO<BoardDTO> pageResponseDTO = boardService.list(pageRequestDTO);
+        // 댓글 수 없이 가져오기
+//        PageResponseDTO<BoardDTO> pageResponseDTO = boardService.list(pageRequestDTO);
+        // 댓글 수도 함께 가져오기
+        PageResponseDTO<BoardListReplyCountDTO> pageResponseDTO = boardService.listWithReplyCount(pageRequestDTO);
         log.info(pageResponseDTO);
 
         model.addAttribute("responseDTO", pageResponseDTO);
