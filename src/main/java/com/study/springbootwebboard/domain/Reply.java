@@ -30,4 +30,9 @@ public class Reply extends BaseEntity {
 
     private String replyer;
 
+    // 댓글 수정 하는 경우 사용할 메서드
+    public void changeText(String text) {
+        this.replyText = text;
+    }
+
 }
