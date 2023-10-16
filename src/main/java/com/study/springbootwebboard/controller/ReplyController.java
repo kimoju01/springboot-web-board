@@ -74,4 +74,19 @@ public class ReplyController {
 
     }
 
+    @ApiOperation(value = "Delete Reply", notes = "DELETE 방식으로 특정 댓글 삭제")
+    @DeleteMapping("/{rno}")
+    public Map<String, Long> remove(@PathVariable("rno") Long rno) {
+        // 존재하지 않는 번호의 댓글을 삭제하려고 하면 EmptyResultDataAccessException 예외 발생
+
+        replyService.remove(rno);
+
+        Map<String, Long> resultMap = new HashMap<>();
+
+        resultMap.put("rno", rno);
+
+        return resultMap;
+
+    }
+
 }
