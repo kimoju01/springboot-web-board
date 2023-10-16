@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice   // 컨트롤러에서 발생하는 예외에 대해 JSON과 같은 순수한 응답 메시지 생성해서 보낼 수 있음
 @Log4j2
@@ -58,6 +59,23 @@ public class CustomRestAdvice {
         errorMap.put("msg", "constraint fails");
 
         // 처리된 errorMap을 클라이언트에게 Bad Request(400) 상태 코드와 함께 에러 응답 반환
+        return ResponseEntity.badRequest().body(errorMap);
+
+    }
+
+    // 댓글 조회 시 잘못된 게시물 번호(없는 번호)가 전달되면 NoSuchElementException 예외가 발생. 상태 코드는 500.
+    // 댓글 작성 시처럼 400 에러로 예외 전송하도록 구성해야 함
+    @ExceptionHandler(NoSuchElementException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public ResponseEntity<Map<String, String>> handleNoSuchElement(Exception e) {
+
+        log.error(e);
+
+        Map<String, String> errorMap = new HashMap<>();
+
+        errorMap.put("time", "" + System.currentTimeMillis());
+        errorMap.put("msg", "No Such Element Exception");
+
         return ResponseEntity.badRequest().body(errorMap);
 
     }
