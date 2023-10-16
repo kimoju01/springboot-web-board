@@ -1,6 +1,7 @@
 package com.study.springbootwebboard.controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -40,4 +41,25 @@ public class CustomRestAdvice {
         return ResponseEntity.badRequest().body(errorMap);
 
     }
+
+    // 댓글 작성 시 잘못된 게시물 번호(없는 번호)가 전달되면 DataIntegrityViolationException 예외가 발생하는데
+    // 서버의 상태 코드는 500으로 '서버 내부 오류'로 처리가 된다.
+    // 즉, 500 에러가 발생하면 클라이언트 측에서는 서버의 문제라고 생각할 것이고 전송하는 데이터에 문제가 있다고 생각하지는 않을 것
+    // 그렇기 때문에 클라이언트에 서버의 문제가 아니라 데이터의 문제가 있다고 전송하기 위해서 예외 전송하도록 구성해야 함
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public ResponseEntity<Map<String, String>> handelFKException(Exception e) {
+
+        log.error(e);
+
+        Map<String, String> errorMap = new HashMap<>();
+
+        errorMap.put("time", "" + System.currentTimeMillis());
+        errorMap.put("msg", "constraint fails");
+
+        // 처리된 errorMap을 클라이언트에게 Bad Request(400) 상태 코드와 함께 에러 응답 반환
+        return ResponseEntity.badRequest().body(errorMap);
+
+    }
+
 }
