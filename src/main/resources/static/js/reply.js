@@ -21,6 +21,13 @@ async function getList({bno, page, size, goLast}) {
     // 요청의 쿼리 파라미터로 page와 size 값을 전달
     const result = await axios.get(`/replies/list/${bno}`, {params: {page, size}})
 
+    // 마지막 페이지 계산하고 다시 Axios로 호출
+    if (goLast) {
+        const total = result.data.total
+        const lastPage = parseInt(Math.ceil(total / size))
+        return getList({bno:bno, page:lastPage, size:size})
+    }
+
     return result.data
 
 }
