@@ -50,7 +50,7 @@ public class CustomRestAdvice {
     // 그렇기 때문에 클라이언트에 서버의 문제가 아니라 데이터의 문제가 있다고 전송하기 위해서 예외 전송하도록 구성해야 함
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
-    public ResponseEntity<Map<String, String>> handelFKException(Exception e) {
+    public ResponseEntity<Map<String, String>> handleFKException(Exception e) {
 
         log.error(e);
 
