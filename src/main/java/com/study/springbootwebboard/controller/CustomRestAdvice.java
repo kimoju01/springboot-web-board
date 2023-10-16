@@ -2,6 +2,7 @@ package com.study.springbootwebboard.controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -63,9 +64,10 @@ public class CustomRestAdvice {
 
     }
 
-    // 댓글 조회 시 잘못된 게시물 번호(없는 번호)가 전달되면 NoSuchElementException 예외가 발생. 상태 코드는 500.
+    // 댓글 조회 시 잘못된 게시물 번호(없는 번호)가 전달되면 NoSuchElementException 예외가 발생. 상태 코드는 500
+    // 댓글 삭제 시 존재하지 않는 번호의 댓글을 삭제하려고 하면 EmptyResultDataAccessException 예외 발생. 상태 코드는 500
     // 댓글 작성 시처럼 400 에러로 예외 전송하도록 구성해야 함
-    @ExceptionHandler(NoSuchElementException.class)
+    @ExceptionHandler({NoSuchElementException.class, EmptyResultDataAccessException.class})
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     public ResponseEntity<Map<String, String>> handleNoSuchElement(Exception e) {
 
