@@ -50,4 +50,17 @@ public class ReplyController {
 
     }
 
+    @ApiOperation(value = "Replies of Board", notes = "GET 방식으로 특정 게시물의 댓글 목록 조회")
+    @GetMapping(value = "/list/{bno}")
+    public PageResponseDTO<ReplyDTO> getList(@PathVariable("bno") Long bno,
+                                             PageRequestDTO pageRequestDTO) {
+        // @PathVariable? 경로 변수를 메서드의 매개변수와 매핑.
+        // 예를 들어 클라이언트에서 /list/123 같은 값이 들어오면 bno에 123이라는 값이 할당 됨
+
+        PageResponseDTO<ReplyDTO> responseDTO = replyService.listOfBoard(bno, pageRequestDTO);
+
+        return responseDTO;
+
+    }
+
 }
