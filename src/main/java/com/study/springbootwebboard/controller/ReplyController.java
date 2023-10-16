@@ -63,4 +63,15 @@ public class ReplyController {
 
     }
 
+    @ApiOperation(value = "Read Reply", notes = "GET 방식으로 특정 댓글 조회")
+    @GetMapping(value = "/{rno}")
+    public ReplyDTO getReplyDTO(@PathVariable("rno") Long rno) {
+        // 해당 댓글 데이터가 존재하지 않으면 서비스 계층 -> Optional<T> -> orElseThrow() -> 컨트롤러에 예외 전달 -> 예외 발생
+        // 500 에러가 발생하기 때문에 CustomRestAdvice에서 예외 처리를 추가해주어야함
+        ReplyDTO replyDTO = replyService.read(rno);
+
+        return replyDTO;
+
+    }
+
 }
