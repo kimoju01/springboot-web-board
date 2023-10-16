@@ -1,7 +1,11 @@
 package com.study.springbootwebboard.controller;
 
+import com.study.springbootwebboard.dto.PageRequestDTO;
+import com.study.springbootwebboard.dto.PageResponseDTO;
 import com.study.springbootwebboard.dto.ReplyDTO;
+import com.study.springbootwebboard.service.ReplyService;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +20,10 @@ import java.util.Map;
 @RestController // 메서드의 모든 리턴 값이 Thymeleaf로 전송되는게 아니라 바로 JSON으로 처리
 @RequestMapping("/replies")
 @Log4j2
+@RequiredArgsConstructor
 public class ReplyController {
+
+    private final ReplyService replyService;
 
     // @ApiOperation? Swagger UI에서 해당 기능의 설명으로 출력
     // consumes 속성? 해당 메서드를 받아서 소비하는 데이터가 어떤 종류인지 명시
@@ -34,7 +41,9 @@ public class ReplyController {
         }
 
         Map<String, Long> resultMap = new HashMap<>();
-        resultMap.put("rno", 111L);
+
+        Long rno = replyService.register(replyDTO);
+        resultMap.put("rno", rno);
 
         // 메서드 리턴값에 문제가 있다면 @RestControllerAdvice가 처리할 것이기 때문에 정상적인 결과만 리턴
         return resultMap;
